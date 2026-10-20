@@ -124,6 +124,7 @@ function initSmartScroll() {
 }
 
 /* 5. Form Submission */
+/* 5. Form Submission (CORS & Redirect Safe) */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -131,6 +132,7 @@ function initContactForm() {
 
   if (!form) return;
 
+  // Unga fresh Web App URL inga paste pannunga
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhZ9l5y1ycVevXhcZ6vP8i1lPKIPmeXO5EsVwY5Ysj338e7EoE5ApRyf_r-JeHDjYF/exec';
 
   form.addEventListener('submit', async (e) => {
@@ -204,26 +206,25 @@ function initContactForm() {
         fileType2: fileType2
       };
 
-      const response = await fetch(SCRIPT_URL, {
+      // CORS bypass call
+      await fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(payload)
       });
 
-      const result = await response.json();
-
-      if (result.status === 'success') {
-        if (statusMsg) {
-          statusMsg.style.display = 'block';
-          statusMsg.style.background = '#DCFCE7';
-          statusMsg.style.color = '#14532D';
-          statusMsg.style.border = '1px solid #86EFAC';
-          statusMsg.innerHTML = `✅ <strong>Submitted Successfully!</strong><br>Reference ID: <strong>#${result.ticketId}</strong>. We have sent a confirmation email.`;
-        }
-        form.reset();
-      } else {
-        throw new Error(result.message || 'Error processing request.');
+      // no-cors mode gives opaque response, Google Sheet-la row vizhundhidum
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.style.background = '#DCFCE7';
+        statusMsg.style.color = '#14532D';
+        statusMsg.style.border = '1px solid #86EFAC';
+        statusMsg.innerHTML = `✅ <strong>Submitted Successfully!</strong><br>Your enquiry has been received. Our team will contact you shortly.`;
       }
+      form.reset();
 
     } catch (err) {
       console.error('Submission Error:', err);
