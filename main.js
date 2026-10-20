@@ -123,7 +123,7 @@ function initSmartScroll() {
   checkPosition();
 }
 
-/* 5. Form Submission (Direct Apps Script Connector with Multi-File Base64) */
+/* 5. Form Submission */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -141,7 +141,6 @@ function initContactForm() {
       statusMsg.textContent = '';
     }
 
-    // Anti-spam honeypot
     if (form.website_url && form.website_url.value.trim() !== '') {
       if (statusMsg) {
         statusMsg.style.display = 'block';
