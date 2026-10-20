@@ -1,21 +1,19 @@
 /**
  * Twinforce Technologies Pte. Ltd. - Core Scripts
- * Handles Navigation, Modals, 3D Scroll FAB, and Multi-File RFQ (2x10MB)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
   initScrollFab();
-  initMultiFileUpload();
+  initSleekFileUpload();
   initContactForm();
   initAutoYear();
 });
 
-/* 1. Mobile Hamburger Menu */
+/* 1. Mobile Menu */
 function initMobileNav() {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
-
   if (!hamburger || !mobileMenu) return;
 
   hamburger.addEventListener('click', () => {
@@ -32,7 +30,7 @@ function closeMobile() {
   if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
 }
 
-/* 2. Projects Filter Tabs */
+/* 2. Projects Filter */
 function filterProjects(event, category) {
   const tabButtons = document.querySelectorAll('.projects-tabs .tab-btn');
   tabButtons.forEach(btn => {
@@ -54,7 +52,7 @@ function filterProjects(event, category) {
   });
 }
 
-/* 3. Lightbox Modal Controllers */
+/* 3. Modals */
 function openProjectModal(title, category, description) {
   const modal = document.getElementById('projectModal');
   if (!modal) return;
@@ -91,7 +89,7 @@ window.addEventListener('click', (e) => {
   if (e.target === teamModal) teamModal.classList.remove('active');
 });
 
-/* 4. 3D Worker Scroll Button */
+/* 4. Scroll FAB */
 function initScrollFab() {
   const fab = document.getElementById('scrollWorkerFab');
   if (!fab) return;
@@ -108,48 +106,60 @@ function initScrollFab() {
   });
 }
 
-/* 5. Multi-File Size Checker (2 Files, Max 10MB each, Total 20MB) */
-function initMultiFileUpload() {
-  const file1 = document.getElementById('uploadFile1');
-  const file2 = document.getElementById('uploadFile2');
-  const statusLabel = document.getElementById('fileSizeStatus');
+/* 5. Sleek File Upload Listener with Background Validation */
+let selectedFilesCache = [];
 
-  const MAX_EACH_MB = 10;
-  const MAX_TOTAL_MB = 20;
+function initSleekFileUpload() {
+  const fileInput = document.getElementById('sleekFileInput');
+  const fileNameDisplay = document.getElementById('sleekFileName');
 
-  function updateStatus() {
-    let size1 = file1 && file1.files[0] ? file1.files[0].size : 0;
-    let size2 = file2 && file2.files[0] ? file2.files[0].size : 0;
+  if (!fileInput || !fileNameDisplay) return;
 
-    let totalBytes = size1 + size2;
-    let totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+  fileInput.addEventListener('change', () => {
+    const files = Array.from(fileInput.files);
 
-    if (statusLabel) {
-      statusLabel.textContent = `Total Selected: ${totalMB} MB / ${MAX_TOTAL_MB} MB`;
-      if (totalBytes > MAX_TOTAL_MB * 1024 * 1024) {
-        statusLabel.style.color = '#DC2626';
-      } else {
-        statusLabel.style.color = '#C84B26';
+    // Rule 1: Max 2 Files
+    if (files.length > 2) {
+      alert("You can attach a maximum of 2 files only.");
+      fileInput.value = "";
+      fileNameDisplay.textContent = "No files selected";
+      selectedFilesCache = [];
+      return;
+    }
+
+    // Rule 2: Each file max 10MB
+    for (let f of files) {
+      if (f.size > 10 * 1024 * 1024) {
+        alert(`File "${f.name}" exceeds 10MB limit. Please attach a smaller file.`);
+        fileInput.value = "";
+        fileNameDisplay.textContent = "No files selected";
+        selectedFilesCache = [];
+        return;
       }
     }
-  }
 
-  function validateInput(input) {
-    if (input && input.files[0]) {
-      const file = input.files[0];
-      if (file.size > MAX_EACH_MB * 1024 * 1024) {
-        alert(`File "${file.name}" exceeds the 10MB limit. Please compress or select a smaller drawing.`);
-        input.value = '';
-      }
+    // Rule 3: Total max 20MB
+    const totalSize = files.reduce((acc, f) => acc + f.size, 0);
+    if (totalSize > 20 * 1024 * 1024) {
+      alert("Total files size exceeds 20MB limit.");
+      fileInput.value = "";
+      fileNameDisplay.textContent = "No files selected";
+      selectedFilesCache = [];
+      return;
     }
-    updateStatus();
-  }
 
-  if (file1) file1.addEventListener('change', () => validateInput(file1));
-  if (file2) file2.addEventListener('change', () => validateInput(file2));
+    selectedFilesCache = files;
+    if (files.length === 1) {
+      fileNameDisplay.textContent = files[0].name;
+    } else if (files.length === 2) {
+      fileNameDisplay.textContent = `${files[0].name}, ${files[1].name}`;
+    } else {
+      fileNameDisplay.textContent = "No files selected";
+    }
+  });
 }
 
-/* 6. Form Submission with AJAX & Base64 Multi-File Processing */
+/* 6. Form Submission */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -158,65 +168,46 @@ function initContactForm() {
 
   if (!form) return;
 
-  // 🔴 IMPORTANT: Replace this placeholder with your deployed Google Apps Script Web App URL!
+  // Apps Script Web App URL
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_DEPLOYED_APP_ID/exec';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // 1. Reset Status
     statusMsg.className = 'form-status';
     statusMsg.style.display = 'none';
-    statusMsg.textContent = '';
 
-    // 2. Anti-Spam Honeypot Verification
+    // Honeypot check
     if (form.website_url && form.website_url.value.trim() !== '') {
       statusMsg.className = 'form-status success';
-      statusMsg.textContent = 'Enquiry logged successfully. Our team will contact you.';
+      statusMsg.textContent = 'Enquiry logged successfully.';
       form.reset();
       return;
     }
 
-    // 3. Validation
     if (!form.checkValidity()) {
       statusMsg.className = 'form-status error';
       statusMsg.textContent = 'Please fill in all required fields accurately.';
       return;
     }
 
-    // 4. File Size Verification
-    const file1Input = document.getElementById('uploadFile1');
-    const file2Input = document.getElementById('uploadFile2');
-    let size1 = file1Input && file1Input.files[0] ? file1Input.files[0].size : 0;
-    let size2 = file2Input && file2Input.files[0] ? file2Input.files[0].size : 0;
-
-    if (size1 + size2 > 20 * 1024 * 1024) {
-      statusMsg.className = 'form-status error';
-      statusMsg.textContent = 'Combined file size exceeds the 20MB limit. Please reduce drawing file sizes.';
-      return;
-    }
-
-    // Lock Button & Show Spinner
     submitBtn.disabled = true;
     if (spinner) spinner.classList.remove('hidden');
 
     try {
-      // Process File 1 (Base64)
       let fileData1 = null, fileName1 = '', fileType1 = '';
-      if (file1Input && file1Input.files.length > 0) {
-        const f1 = file1Input.files[0];
-        fileName1 = f1.name;
-        fileType1 = f1.type;
-        fileData1 = await fileToBase64(f1);
+      let fileData2 = null, fileName2 = '', fileType2 = '';
+
+      if (selectedFilesCache.length > 0) {
+        fileName1 = selectedFilesCache[0].name;
+        fileType1 = selectedFilesCache[0].type;
+        fileData1 = await fileToBase64(selectedFilesCache[0]);
       }
 
-      // Process File 2 (Base64)
-      let fileData2 = null, fileName2 = '', fileType2 = '';
-      if (file2Input && file2Input.files.length > 0) {
-        const f2 = file2Input.files[0];
-        fileName2 = f2.name;
-        fileType2 = f2.type;
-        fileData2 = await fileToBase64(f2);
+      if (selectedFilesCache.length > 1) {
+        fileName2 = selectedFilesCache[1].name;
+        fileType2 = selectedFilesCache[1].type;
+        fileData2 = await fileToBase64(selectedFilesCache[1]);
       }
 
       const payload = {
@@ -236,9 +227,7 @@ function initContactForm() {
 
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       });
 
@@ -246,17 +235,18 @@ function initContactForm() {
 
       if (result.status === 'success') {
         statusMsg.className = 'form-status success';
-        statusMsg.innerHTML = `<strong>Enquiry Received:</strong> Reference ID <strong>#${result.ticketId}</strong> logged. Our engineering desk will review your scope.`;
+        statusMsg.innerHTML = `<strong>Enquiry Received:</strong> Reference ID <strong>#${result.ticketId}</strong> logged. We will contact you shortly.`;
         form.reset();
-        document.getElementById('fileSizeStatus').textContent = 'Total Selected: 0 MB / 20 MB';
+        document.getElementById('sleekFileName').textContent = "No files selected";
+        selectedFilesCache = [];
       } else {
-        throw new Error(result.message || 'System encountered an error recording your scope.');
+        throw new Error(result.message || 'Error logging scope.');
       }
 
     } catch (err) {
-      console.error('Submission Error:', err);
+      console.error(err);
       statusMsg.className = 'form-status error';
-      statusMsg.textContent = err.message || 'Unable to submit enquiry online. Please WhatsApp +65 89585741 directly.';
+      statusMsg.textContent = err.message || 'Unable to submit online. Please WhatsApp +65 89585741.';
     } finally {
       submitBtn.disabled = false;
       if (spinner) spinner.classList.add('hidden');
@@ -268,15 +258,11 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64Data = reader.result.split(',')[1];
-      resolve(base64Data);
-    };
+    reader.onload = () => resolve(reader.result.split(',')[1]);
     reader.onerror = error => reject(error);
   });
 }
 
-/* 7. Auto Year */
 function initAutoYear() {
   const yr = document.getElementById('currentYear');
   if (yr) yr.textContent = new Date().getFullYear();
