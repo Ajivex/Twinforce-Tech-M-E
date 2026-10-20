@@ -273,14 +273,22 @@ button, input, select, textarea { font: inherit; }
   50% { transform: translateY(-8px); }
 }
 
+
+/* RENDUME ORE DARK SOLID ORANGE COLOR */
+
 .hero-eyebrow {
   font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: 1.15rem;
+  font-weight: 800; /* Nalla thick bold aakirukkom */
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #FFAA8F;
+  color: #C84B26 !important; /* "PRECISION" maathiriye same solid dark orange */
   margin-bottom: 0.85rem;
+}
+
+.hero-title em {
+  font-style: normal;
+  color: #C84B26 !important; /* Exact same matching dark shade */
 }
 
 .hero-title {
