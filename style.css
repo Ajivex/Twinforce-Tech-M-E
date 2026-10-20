@@ -42,14 +42,6 @@
   padding: 0;
 }
 
-html, body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   font-family: var(--font-body);
   color: var(--text-main);
@@ -60,7 +52,9 @@ html {
 }
 
 body {
+  overflow-x: hidden;
   min-height: 100vh;
+  width: 100%;
 }
 
 a { color: inherit; text-decoration: none; transition: color var(--transition); }
@@ -75,7 +69,9 @@ button, input, select, textarea { font: inherit; }
 .soc-yt:hover { color: #FF0000 !important; }
 .soc-ig:hover { color: #E1306C !important; }
 
-/* TOP BAR */
+/* ==========================================================================
+   TOP BAR (DESKTOP ONLY - AUTO HIDDEN ON MOBILE/TABLET)
+   ========================================================================== */
 .top-bar {
   background: var(--brand-navy-dark);
   color: #E2E8F0;
@@ -104,7 +100,9 @@ button, input, select, textarea { font: inherit; }
   font-size: 0.95rem;
 }
 
-/* NAVBAR & LOGO */
+/* ==========================================================================
+   NAVBAR & LOGO (CLEAN FLEX ALIGNMENT)
+   ========================================================================== */
 #navbar {
   position: sticky;
   top: 0;
@@ -228,7 +226,9 @@ button, input, select, textarea { font: inherit; }
   border-bottom: 1px solid var(--border-subtle);
 }
 
-/* HERO SECTION */
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
 #hero {
   position: relative;
   background: linear-gradient(135deg, rgba(14, 28, 54, 0.88) 0%, rgba(18, 37, 71, 0.82) 100%), 
@@ -249,6 +249,7 @@ button, input, select, textarea { font: inherit; }
   align-items: center;
 }
 
+/* FLOATING BIZSAFE BADGE */
 .bizsafe-badge {
   display: inline-block;
   background: #FFFFFF;
@@ -275,10 +276,10 @@ button, input, select, textarea { font: inherit; }
 .hero-eyebrow {
   font-family: var(--font-display);
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 800; 
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #C84B26 !important;
+  color: #C84B26 !important; 
   margin-bottom: 0.85rem;
 }
 
@@ -295,7 +296,7 @@ button, input, select, textarea { font: inherit; }
 
 .hero-title em {
   font-style: normal;
-  color: #C84B26 !important;
+  color: #C84B26 !important; 
 }
 
 .hero-sub {
@@ -389,7 +390,9 @@ button, input, select, textarea { font: inherit; }
   font-weight: 900;
 }
 
-/* HERITAGE INTEGRATION SECTION */
+/* ==========================================================================
+   HERITAGE / INTEGRATION SECTION (OVERFLOW FIXED)
+   ========================================================================== */
 .heritage-integration-section {
   padding: 3rem 2.5rem 4rem;
   background: var(--bg-canvas);
@@ -448,6 +451,7 @@ button, input, select, textarea { font: inherit; }
   line-height: 1.65;
 }
 
+/* BULLETS: BOTH SIDES WITH STAR (★) */
 .heritage-bullets li {
   font-size: 0.95rem;
   font-weight: 500;
@@ -490,7 +494,9 @@ button, input, select, textarea { font: inherit; }
   margin-top: 0.35rem;
 }
 
-/* SECTIONS SHARED */
+/* ==========================================================================
+   SECTIONS SHARED
+   ========================================================================== */
 .section-inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -525,7 +531,7 @@ button, input, select, textarea { font: inherit; }
 .text-center { text-align: center; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 
-/* ABOUT SECTION */
+/* About Section */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
@@ -573,7 +579,7 @@ button, input, select, textarea { font: inherit; }
 }
 .about-points li::before { content: "✔"; position: absolute; left: 0; color: var(--brand-orange); }
 
-/* SERVICES GRID */
+/* Services Grid */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -619,7 +625,7 @@ button, input, select, textarea { font: inherit; }
 
 .service-card p { font-size: 0.95rem; color: var(--text-muted); }
 
-/* PROJECTS GRID */
+/* Projects */
 .project-header-flex {
   display: flex;
   justify-content: space-between;
@@ -691,7 +697,9 @@ button, input, select, textarea { font: inherit; }
   line-height: 1.25;
 }
 
-/* LEADERSHIP TEAM */
+/* ==========================================================================
+   LEADERSHIP TEAM (MODERN FULL-CARD UI/UX)
+   ========================================================================== */
 .team-cards-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -783,7 +791,7 @@ button, input, select, textarea { font: inherit; }
   color: var(--brand-orange);
 }
 
-/* BLOGS */
+/* Blogs */
 .blog-preview-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -808,7 +816,9 @@ button, input, select, textarea { font: inherit; }
   gap: 0.45rem;
 }
 
-/* CONTACT SECTION */
+/* ==========================================================================
+   CONTACT FORM
+   ========================================================================== */
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1.25fr;
@@ -891,6 +901,56 @@ button, input, select, textarea { font: inherit; }
   font-weight: 700;
   color: var(--brand-navy);
   margin-bottom: 0.45rem;
+}
+
+.sleek-upload-bar {
+  display: flex;
+  align-items: center;
+  background: #F8FAFC;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  position: relative;
+  transition: border-color var(--transition);
+}
+
+.sleek-upload-bar:hover { border-color: var(--brand-navy); }
+
+.sleek-file-btn {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  color: var(--brand-navy);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.sleek-file-btn:hover { background: var(--brand-navy); color: #FFFFFF; }
+
+.sleek-file-name {
+  margin-left: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.hidden-real-file {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
 }
 
 .form-submit {
@@ -1276,4 +1336,28 @@ footer {
   .nav-logo-img {
     height: 36px;
   }
+}
+
+/* LAPTOP FULL-WIDTH ALIGNMENT FIX (MOBILE SAFE) */
+html, body {
+  overflow-x: hidden !important;
+}
+
+footer {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.footer-container {
+  width: 100% !important;
+  max-width: var(--max-width) !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+.footer-bottom {
+  width: 100% !important;
+  max-width: var(--max-width) !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
 }
