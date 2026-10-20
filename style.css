@@ -1361,3 +1361,31 @@ footer {
   margin: 0 auto !important;
   box-sizing: border-box !important;
 }
+
+/* =========================================================
+   MOBILE FOOTER EXACT FIX (SINGLE COLUMN & ALIGNMENT)
+   ========================================================= */
+@media (max-width: 991px) {
+  .footer-container {
+    grid-template-columns: 1fr !important; /* Forces single column stacking */
+    gap: 2.5rem !important;
+    padding: 0 1.5rem !important;
+  }
+  
+  .footer-col {
+    text-align: left !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important; /* Stacks copyright & logo vertically */
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 1.25rem !important;
+    padding: 2rem 1.5rem 2rem !important;
+  }
+
+  .footer-bottom p {
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+}
