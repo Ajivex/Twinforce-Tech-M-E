@@ -189,7 +189,7 @@ function initContactForm() {
   if (!form) return;
 
   // Apps Script Web App URL
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_DEPLOYED_APP_ID/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhZ9l5y1ycVevXhcZ6vP8i1lPKIPmeXO5EsVwY5Ysj338e7EoE5ApRyf_r-JeHDjYF/exec';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
