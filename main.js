@@ -124,7 +124,7 @@ function initSmartScroll() {
 }
 
 /* 5. Form Submission */
-/* 5. Form Submission (CORS & Redirect Safe) */
+/* 5. Form Submission */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -132,7 +132,6 @@ function initContactForm() {
 
   if (!form) return;
 
-  // Unga fresh Web App URL inga paste pannunga
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhZ9l5y1ycVevXhcZ6vP8i1lPKIPmeXO5EsVwY5Ysj338e7EoE5ApRyf_r-JeHDjYF/exec';
 
   form.addEventListener('submit', async (e) => {
@@ -206,23 +205,20 @@ function initContactForm() {
         fileType2: fileType2
       };
 
-      // CORS bypass call
       await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'text/plain;charset=utf-8'
         },
         body: JSON.stringify(payload)
       });
 
-      // no-cors mode gives opaque response, Google Sheet-la row vizhundhidum
       if (statusMsg) {
         statusMsg.style.display = 'block';
         statusMsg.style.background = '#DCFCE7';
         statusMsg.style.color = '#14532D';
         statusMsg.style.border = '1px solid #86EFAC';
-        statusMsg.innerHTML = `✅ <strong>Submitted Successfully!</strong><br>Your enquiry has been received. Our team will contact you shortly.`;
+        statusMsg.innerHTML = `✅ <strong>Submitted Successfully!</strong><br>Your enquiry has been received. Our estimating team will contact you shortly.`;
       }
       form.reset();
 
@@ -239,18 +235,6 @@ function initContactForm() {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnText;
     }
-  });
-}
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64 = reader.result.split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = error => reject(error);
   });
 }
 
