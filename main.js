@@ -1,10 +1,11 @@
 /**
  * Twinforce Technologies Pte. Ltd. - Core Scripts
+ * Dynamic Direction Scroll, Sleek File Upload, and Modal Management
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
-  initScrollFab();
+  initSmartScroll();
   initSleekFileUpload();
   initContactForm();
   initAutoYear();
@@ -89,24 +90,45 @@ window.addEventListener('click', (e) => {
   if (e.target === teamModal) teamModal.classList.remove('active');
 });
 
-/* 4. Scroll FAB */
-function initScrollFab() {
-  const fab = document.getElementById('scrollWorkerFab');
-  if (!fab) return;
+/* 4. Smart Dynamic Directional Scroll Button */
+function initSmartScroll() {
+  const fab = document.getElementById('smartScrollFab');
+  const icon = document.getElementById('fabIcon');
+  const tooltip = document.getElementById('fabTooltip');
+
+  if (!fab || !icon || !tooltip) return;
+
+  function updateScrollDirection() {
+    const scrollPosition = window.scrollY;
+    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    // If user has scrolled more than 40% of the page, switch to TOP
+    if (scrollPosition > documentHeight * 0.4) {
+      icon.className = 'fas fa-arrow-up';
+      tooltip.textContent = 'Back to Top';
+      fab.setAttribute('data-action', 'top');
+    } else {
+      icon.className = 'fas fa-arrow-down';
+      tooltip.textContent = 'Scroll Down';
+      fab.setAttribute('data-action', 'down');
+    }
+  }
+
+  window.addEventListener('scroll', updateScrollDirection, { passive: true });
 
   fab.addEventListener('click', () => {
-    const totalHeight = document.documentElement.scrollHeight;
-    const currentPos = window.scrollY + window.innerHeight;
-
-    if (currentPos >= totalHeight - 200) {
+    const action = fab.getAttribute('data-action');
+    if (action === 'top') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' });
+      window.scrollBy({ top: window.innerHeight * 0.9, behavior: 'smooth' });
     }
   });
+
+  updateScrollDirection();
 }
 
-/* 5. Sleek File Upload Listener with Background Validation */
+/* 5. Sleek File Upload Listener with Silent Validation */
 let selectedFilesCache = [];
 
 function initSleekFileUpload() {
@@ -177,7 +199,7 @@ function initContactForm() {
     statusMsg.className = 'form-status';
     statusMsg.style.display = 'none';
 
-    // Honeypot check
+    // Anti-spam honeypot
     if (form.website_url && form.website_url.value.trim() !== '') {
       statusMsg.className = 'form-status success';
       statusMsg.textContent = 'Enquiry logged successfully.';
