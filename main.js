@@ -90,42 +90,40 @@ window.addEventListener('click', (e) => {
   if (e.target === teamModal) teamModal.classList.remove('active');
 });
 
-/* 4. Smart Dynamic Directional Scroll Button */
+/* 4. Smart Direct Scroll (Top to Bottom / Bottom to Top) */
 function initSmartScroll() {
   const fab = document.getElementById('smartScrollFab');
-  const icon = document.getElementById('fabIcon');
   const tooltip = document.getElementById('fabTooltip');
 
-  if (!fab || !icon || !tooltip) return;
+  if (!fab || !tooltip) return;
 
-  function updateScrollDirection() {
-    const scrollPosition = window.scrollY;
-    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+  function checkPosition() {
+    const scrollPos = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
-    // If user has scrolled more than 40% of the page, switch to TOP
-    if (scrollPosition > documentHeight * 0.4) {
-      icon.className = 'fas fa-arrow-up';
+    // Paadhi page-kku mela scroll pannitta "Back to Top" nu maathum
+    if (scrollPos > maxScroll * 0.4) {
       tooltip.textContent = 'Back to Top';
       fab.setAttribute('data-action', 'top');
     } else {
-      icon.className = 'fas fa-arrow-down';
-      tooltip.textContent = 'Scroll Down';
-      fab.setAttribute('data-action', 'down');
+      tooltip.textContent = 'Scroll to Bottom';
+      fab.setAttribute('data-action', 'bottom');
     }
   }
 
-  window.addEventListener('scroll', updateScrollDirection, { passive: true });
+  window.addEventListener('scroll', checkPosition, { passive: true });
 
   fab.addEventListener('click', () => {
     const action = fab.getAttribute('data-action');
     if (action === 'top') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      window.scrollBy({ top: window.innerHeight * 0.9, behavior: 'smooth' });
+      // Direct-a page-oda end-kku (Footer/Contact-kku) smooth-a pogum
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
     }
   });
 
-  updateScrollDirection();
+  checkPosition();
 }
 
 /* 5. Sleek File Upload Listener with Silent Validation */
