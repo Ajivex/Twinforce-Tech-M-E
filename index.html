@@ -709,27 +709,13 @@
             <textarea id="formMessage" name="message" rows="4" placeholder="Specify line sizes, pipe schedule, test pressures, site location (Jurong Island/Tuas), shutdown timeline, or LEW license requirements..." required></textarea>
           </div>
 
-          <!-- 2 File Upload Inputs: Each Max 10MB (Total 20MB) -->
-          <div class="file-upload-section">
-            <div class="file-upload-header">
-              <label class="file-section-label"><i class="fas fa-paperclip"></i> Attach Engineering Documents (Optional - Up to 2 Files, Max 10MB Each)</label>
-              <span class="file-size-status" id="fileSizeStatus">Total Selected: 0 MB / 20 MB</span>
-            </div>
-            
-            <div class="file-inputs-grid">
-              <!-- File Slot 1 -->
-              <div class="file-input-box">
-                <label for="uploadFile1" class="file-slot-label">File 1 (Isometric Spool / BOQ / Drawing)</label>
-                <input type="file" id="uploadFile1" name="file1" class="file-control" accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.xlsx,.xls,.csv" />
-                <span class="file-subtext">Max 10MB (PDF, DWG, DXF, Excel, Images)</span>
-              </div>
-
-              <!-- File Slot 2 -->
-              <div class="file-input-box">
-                <label for="uploadFile2" class="file-slot-label">File 2 (SLD / Test Pack / Additional Specs)</label>
-                <input type="file" id="uploadFile2" name="file2" class="file-control" accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.xlsx,.xls,.csv" />
-                <span class="file-subtext">Max 10MB (PDF, DWG, DXF, Excel, Images)</span>
-              </div>
+          <!-- CLEAN SLEEK ATTACHMENT BAR -->
+          <div class="compact-file-group">
+            <label class="compact-file-label"><i class="fas fa-paperclip"></i> Attach Drawings / BOQ (Optional)</label>
+            <div class="sleek-upload-bar">
+              <span class="sleek-file-btn"><i class="fas fa-folder-open"></i> Choose Files</span>
+              <span class="sleek-file-name" id="sleekFileName">No files selected</span>
+              <input type="file" id="sleekFileInput" name="drawings" class="hidden-real-file" multiple accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.xlsx,.xls,.csv" />
             </div>
           </div>
 
