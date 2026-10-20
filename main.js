@@ -180,54 +180,71 @@ function initSleekFileUpload() {
 }
 
 /* 6. Form Submission */
+/* 6. Form Submission (Bulleted Safe Logic) */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
   const spinner = document.getElementById('submitSpinner');
   const statusMsg = document.getElementById('formStatus');
 
   if (!form) return;
 
-  // Apps Script Web App URL
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhZ9l5y1ycVevXhcZ6vP8i1lPKIPmeXO5EsVwY5Ysj338e7EoE5ApRyf_r-JeHDjYF/exec';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    statusMsg.className = 'form-status';
     statusMsg.style.display = 'none';
+    statusMsg.className = 'form-status';
+    statusMsg.textContent = '';
 
-    // Anti-spam honeypot
+    // Anti-spam check
     if (form.website_url && form.website_url.value.trim() !== '') {
-      statusMsg.className = 'form-status success';
+      statusMsg.style.display = 'block';
+      statusMsg.style.background = '#DCFCE7';
+      statusMsg.style.color = '#14532D';
       statusMsg.textContent = 'Enquiry logged successfully.';
       form.reset();
       return;
     }
 
     if (!form.checkValidity()) {
-      statusMsg.className = 'form-status error';
+      statusMsg.style.display = 'block';
+      statusMsg.style.background = '#FEE2E2';
+      statusMsg.style.color = '#991B1B';
       statusMsg.textContent = 'Please fill in all required fields accurately.';
       return;
     }
 
+    // Lock button
     submitBtn.disabled = true;
+    if (btnText) btnText.textContent = 'SUBMITTING...';
     if (spinner) spinner.classList.remove('hidden');
 
     try {
+      const file1Input = document.getElementById('fileSlot1');
+      const file2Input = document.getElementById('fileSlot2');
+
       let fileData1 = null, fileName1 = '', fileType1 = '';
       let fileData2 = null, fileName2 = '', fileType2 = '';
 
-      if (selectedFilesCache.length > 0) {
-        fileName1 = selectedFilesCache[0].name;
-        fileType1 = selectedFilesCache[0].type;
-        fileData1 = await fileToBase64(selectedFilesCache[0]);
+      // Convert File 1
+      if (file1Input && file1Input.files.length > 0) {
+        const f1 = file1Input.files[0];
+        if (f1.size > 10 * 1024 * 1024) throw new Error('File 1 exceeds 10MB limit.');
+        fileName1 = f1.name;
+        fileType1 = f1.type;
+        fileData1 = await fileToBase64(f1);
       }
 
-      if (selectedFilesCache.length > 1) {
-        fileName2 = selectedFilesCache[1].name;
-        fileType2 = selectedFilesCache[1].type;
-        fileData2 = await fileToBase64(selectedFilesCache[1]);
+      // Convert File 2
+      if (file2Input && file2Input.files.length > 0) {
+        const f2 = file2Input.files[0];
+        if (f2.size > 10 * 1024 * 1024) throw new Error('File 2 exceeds 10MB limit.');
+        fileName2 = f2.name;
+        fileType2 = f2.type;
+        fileData2 = await fileToBase64(f2);
       }
 
       const payload = {
@@ -245,30 +262,38 @@ function initContactForm() {
         fileType2: fileType2
       };
 
+      // Direct POST call to Apps Script
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
         body: JSON.stringify(payload)
       });
 
       const result = await response.json();
 
       if (result.status === 'success') {
-        statusMsg.className = 'form-status success';
-        statusMsg.innerHTML = `<strong>Enquiry Received:</strong> Reference ID <strong>#${result.ticketId}</strong> logged. We will contact you shortly.`;
+        statusMsg.style.display = 'block';
+        statusMsg.style.background = '#DCFCE7';
+        statusMsg.style.color = '#14532D';
+        statusMsg.style.border = '1px solid #86EFAC';
+        statusMsg.innerHTML = `✅ <strong>Submitted Successfully!</strong><br>Reference ID: <strong>#${result.ticketId}</strong>. We have sent a confirmation email.`;
         form.reset();
-        document.getElementById('sleekFileName').textContent = "No files selected";
-        selectedFilesCache = [];
       } else {
-        throw new Error(result.message || 'Error logging scope.');
+        throw new Error(result.message || 'System encountered an error logging enquiry.');
       }
 
     } catch (err) {
-      console.error(err);
-      statusMsg.className = 'form-status error';
-      statusMsg.textContent = err.message || 'Unable to submit online. Please WhatsApp +65 89585741.';
+      console.error('Submission Failed:', err);
+      statusMsg.style.display = 'block';
+      statusMsg.style.background = '#FEE2E2';
+      statusMsg.style.color = '#991B1B';
+      statusMsg.style.border = '1px solid #FCA5A5';
+      statusMsg.textContent = err.message || 'Failed to submit enquiry. Please call or WhatsApp +65 89585741 directly.';
     } finally {
       submitBtn.disabled = false;
+      if (btnText) btnText.textContent = 'REQUEST QUOTATION';
       if (spinner) spinner.classList.add('hidden');
     }
   });
@@ -278,12 +303,10 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result.split(',')[1]);
-    reader.onerror = error => reject(error);
+    reader.onload = () => {
+      const base64 = reader.result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = (error) => reject(error);
   });
-}
-
-function initAutoYear() {
-  const yr = document.getElementById('currentYear');
-  if (yr) yr.textContent = new Date().getFullYear();
 }
