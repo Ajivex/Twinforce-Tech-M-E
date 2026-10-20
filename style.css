@@ -42,6 +42,14 @@
   padding: 0;
 }
 
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 html {
   font-family: var(--font-body);
   color: var(--text-main);
@@ -52,9 +60,7 @@ html {
 }
 
 body {
-  overflow-x: hidden;
   min-height: 100vh;
-  width: 100%;
 }
 
 a { color: inherit; text-decoration: none; transition: color var(--transition); }
@@ -69,9 +75,7 @@ button, input, select, textarea { font: inherit; }
 .soc-yt:hover { color: #FF0000 !important; }
 .soc-ig:hover { color: #E1306C !important; }
 
-/* ==========================================================================
-   TOP BAR (DESKTOP ONLY - AUTO HIDDEN ON MOBILE/TABLET)
-   ========================================================================== */
+/* TOP BAR */
 .top-bar {
   background: var(--brand-navy-dark);
   color: #E2E8F0;
@@ -100,9 +104,7 @@ button, input, select, textarea { font: inherit; }
   font-size: 0.95rem;
 }
 
-/* ==========================================================================
-   NAVBAR & LOGO (CLEAN FLEX ALIGNMENT)
-   ========================================================================== */
+/* NAVBAR & LOGO */
 #navbar {
   position: sticky;
   top: 0;
@@ -226,9 +228,7 @@ button, input, select, textarea { font: inherit; }
   border-bottom: 1px solid var(--border-subtle);
 }
 
-/* ==========================================================================
-   HERO SECTION
-   ========================================================================== */
+/* HERO SECTION */
 #hero {
   position: relative;
   background: linear-gradient(135deg, rgba(14, 28, 54, 0.88) 0%, rgba(18, 37, 71, 0.82) 100%), 
@@ -249,7 +249,6 @@ button, input, select, textarea { font: inherit; }
   align-items: center;
 }
 
-/* FLOATING BIZSAFE BADGE */
 .bizsafe-badge {
   display: inline-block;
   background: #FFFFFF;
@@ -273,22 +272,14 @@ button, input, select, textarea { font: inherit; }
   50% { transform: translateY(-8px); }
 }
 
-
-/* RENDUME ORE DARK SOLID ORANGE COLOR */
-
 .hero-eyebrow {
   font-family: var(--font-display);
   font-size: 1.15rem;
-  font-weight: 800; /* Nalla thick bold aakirukkom */
+  font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #C84B26 !important; /* "PRECISION" maathiriye same solid dark orange */
+  color: #C84B26 !important;
   margin-bottom: 0.85rem;
-}
-
-.hero-title em {
-  font-style: normal;
-  color: #C84B26 !important; /* Exact same matching dark shade */
 }
 
 .hero-title {
@@ -304,7 +295,7 @@ button, input, select, textarea { font: inherit; }
 
 .hero-title em {
   font-style: normal;
-  color: #FF7A50;
+  color: #C84B26 !important;
 }
 
 .hero-sub {
@@ -398,9 +389,7 @@ button, input, select, textarea { font: inherit; }
   font-weight: 900;
 }
 
-/* ==========================================================================
-   HERITAGE / INTEGRATION SECTION (OVERFLOW FIXED)
-   ========================================================================== */
+/* HERITAGE INTEGRATION SECTION */
 .heritage-integration-section {
   padding: 3rem 2.5rem 4rem;
   background: var(--bg-canvas);
@@ -459,7 +448,6 @@ button, input, select, textarea { font: inherit; }
   line-height: 1.65;
 }
 
-/* BULLETS: BOTH SIDES WITH STAR (★) */
 .heritage-bullets li {
   font-size: 0.95rem;
   font-weight: 500;
@@ -469,7 +457,6 @@ button, input, select, textarea { font: inherit; }
   padding-left: 1.5rem;
 }
 
-/* AGSR side bullet - Smart Steel Star */
 .heritage-bullets li::before {
   content: "★";
   position: absolute;
@@ -479,7 +466,6 @@ button, input, select, textarea { font: inherit; }
   font-size: 0.95rem;
 }
 
-/* Twinforce side bullet - Bright Orange Star */
 .heritage-bullets.star-bullets li::before {
   content: "★";
   color: var(--brand-orange);
@@ -504,9 +490,7 @@ button, input, select, textarea { font: inherit; }
   margin-top: 0.35rem;
 }
 
-/* ==========================================================================
-   SECTIONS SHARED
-   ========================================================================== */
+/* SECTIONS SHARED */
 .section-inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -541,7 +525,7 @@ button, input, select, textarea { font: inherit; }
 .text-center { text-align: center; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 
-/* About Section */
+/* ABOUT SECTION */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
@@ -589,7 +573,7 @@ button, input, select, textarea { font: inherit; }
 }
 .about-points li::before { content: "✔"; position: absolute; left: 0; color: var(--brand-orange); }
 
-/* Services Grid */
+/* SERVICES GRID */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -635,7 +619,7 @@ button, input, select, textarea { font: inherit; }
 
 .service-card p { font-size: 0.95rem; color: var(--text-muted); }
 
-/* Projects */
+/* PROJECTS GRID */
 .project-header-flex {
   display: flex;
   justify-content: space-between;
@@ -707,9 +691,7 @@ button, input, select, textarea { font: inherit; }
   line-height: 1.25;
 }
 
-/* ==========================================================================
-   LEADERSHIP TEAM (MODERN FULL-CARD UI/UX)
-   ========================================================================== */
+/* LEADERSHIP TEAM */
 .team-cards-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -801,7 +783,7 @@ button, input, select, textarea { font: inherit; }
   color: var(--brand-orange);
 }
 
-/* Blogs */
+/* BLOGS */
 .blog-preview-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -826,9 +808,7 @@ button, input, select, textarea { font: inherit; }
   gap: 0.45rem;
 }
 
-/* ==========================================================================
-   CONTACT FORM
-   ========================================================================== */
+/* CONTACT SECTION */
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1.25fr;
@@ -913,56 +893,6 @@ button, input, select, textarea { font: inherit; }
   margin-bottom: 0.45rem;
 }
 
-.sleek-upload-bar {
-  display: flex;
-  align-items: center;
-  background: #F8FAFC;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem 0.75rem;
-  position: relative;
-  transition: border-color var(--transition);
-}
-
-.sleek-upload-bar:hover { border-color: var(--brand-navy); }
-
-.sleek-file-btn {
-  background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
-  color: var(--brand-navy);
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  transition: var(--transition);
-  flex-shrink: 0;
-}
-
-.sleek-file-btn:hover { background: var(--brand-navy); color: #FFFFFF; }
-
-.sleek-file-name {
-  margin-left: 1rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-grow: 1;
-}
-
-.hidden-real-file {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-}
-
 .form-submit {
   width: 100%;
   background: var(--brand-orange);
@@ -1009,22 +939,24 @@ button, input, select, textarea { font: inherit; }
 .form-status.success { display: block; background: #DCFCE7; color: #14532D; border: 1px solid #BBF7D0; }
 .form-status.error { display: block; background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
 
-/* Footer */
+/* FOOTER */
 footer {
-  background: var(--brand-navy-dark);
+  width: 100% !important;
+  background: var(--brand-navy-dark) !important;
   color: #94A3B8;
-  padding: 5rem 0 2rem;
-  width: 100%;
+  padding: 5rem 0 2rem !important;
+  box-sizing: border-box !important;
 }
 
 .footer-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 2.5rem;
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  gap: 3.5rem;
-  margin-bottom: 3.5rem;
+  width: 100% !important;
+  max-width: var(--max-width) !important;
+  margin: 0 auto !important;
+  padding: 0 2.5rem !important;
+  display: grid !important;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr !important;
+  gap: 3.5rem !important;
+  box-sizing: border-box !important;
 }
 
 .footer-col h3 {
@@ -1056,21 +988,21 @@ footer {
 .footer-social a:hover { transform: translateY(-2px); }
 
 .footer-bottom {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 2rem 2.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  width: 100% !important;
+  max-width: var(--max-width) !important;
+  margin: 0 auto !important;
+  padding: 2rem 2.5rem 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
   font-size: 0.85rem;
   flex-wrap: wrap;
   gap: 1rem;
+  box-sizing: border-box !important;
 }
 
-/* ==========================================================================
-   INDUSTRIAL HARD HAT SMART BUTTON
-   ========================================================================== */
+/* SMART SCROLL BUTTON */
 .scroll-fab {
   position: fixed;
   bottom: 2rem;
@@ -1118,7 +1050,7 @@ footer {
 
 .scroll-fab:hover .fab-tooltip { opacity: 1; }
 
-/* Modals */
+/* MODALS */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -1166,9 +1098,7 @@ footer {
 }
 .lightbox-desc { font-size: 0.95rem; color: var(--text-muted); }
 
-/* ==========================================================================
-   TABLET RESPONSIVE (1024px to 1200px)
-   ========================================================================== */
+/* TABLET RESPONSIVE */
 @media (max-width: 1200px) {
   .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
   .services-grid, .projects-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1176,17 +1106,12 @@ footer {
   .footer-container { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ==========================================================================
-   MOBILE & SMALL TABLET RESPONSIVE FIXES (MAX-WIDTH: 991px)
-   Solves Top-bar, Alignment, Heritage, and Single Team Card Display
-   ========================================================================== */
+/* MOBILE RESPONSIVE (MAX-WIDTH: 991px) */
 @media (max-width: 991px) {
-  /* 1. HIDE TOP BAR COMPLETELY ON MOBILE/TABLET */
   .top-bar {
     display: none !important;
   }
 
-  /* 2. LOGO & HEADER PERFECT MOBILE FIT */
   .nav-inner {
     padding: 0 1.25rem;
     height: 70px;
@@ -1208,7 +1133,6 @@ footer {
     font-size: 0.6rem;
   }
 
-  /* 3. HERO SECTION MOBILE REFINEMENT */
   #hero {
     padding: 3.5rem 1.25rem;
   }
@@ -1228,7 +1152,6 @@ footer {
     padding: 1.75rem 1.25rem;
   }
 
-/* 4. HERITAGE / LINEAGE SECTION OVERFLOW & INTEGRATED ALIGNMENT FIX */
   .heritage-integration-section {
     padding: 2rem 1rem;
   }
@@ -1246,9 +1169,8 @@ footer {
     line-height: 1.2;
   }
 
-  /* INTEGRATED & ARROW PERFECT CENTER ALIGNMENT ON MOBILE */
   .heritage-divider {
-    transform: none !important; /* Rotation cancel */
+    transform: none !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -1257,7 +1179,7 @@ footer {
     margin: 1.25rem 0;
   }
   .heritage-divider-label {
-    order: 1; /* "INTEGRATED" text top-la varum */
+    order: 1;
     font-size: 0.85rem;
     letter-spacing: 2px;
     color: var(--steel);
@@ -1265,11 +1187,11 @@ footer {
     margin: 0;
   }
   .heritage-arrow {
-    order: 2; /* Arrow keezha pointing down-aa varum */
+    order: 2;
     font-size: 2.2rem;
     color: var(--brand-orange);
     line-height: 1;
-    transform: rotate(90deg); /* Downward arrow pointing towards Twinforce */
+    transform: rotate(90deg);
     display: inline-block;
   }
 
@@ -1278,7 +1200,6 @@ footer {
     display: inline-block;
   }
 
-  /* 5. ABOUT "WHO WE ARE" MOBILE FIX */
   .section-inner {
     padding: 3.5rem 1.25rem;
   }
@@ -1294,7 +1215,6 @@ footer {
     font-size: 2.25rem;
   }
 
-  /* 6. LEADERSHIP TEAM (ONE CARD FULL-SCREEN VIEW ON MOBILE) */
   .team-cards-row {
     grid-template-columns: 1fr;
     gap: 2.5rem;
@@ -1308,7 +1228,6 @@ footer {
     height: 320px;
   }
 
-  /* 7. SERVICES & PROJECTS & BLOGS */
   .services-grid, 
   .projects-grid, 
   .blog-preview-grid {
@@ -1316,7 +1235,6 @@ footer {
     gap: 1.75rem;
   }
 
-  /* 8. CONTACT FORM & FOOTER MOBILE FIT */
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
@@ -1340,7 +1258,6 @@ footer {
     flex-direction: column;
   }
 
-  /* 9. SCROLL BUTTON MOBILE PLACEMENT */
   .scroll-fab {
     bottom: 1.5rem;
     right: 1.5rem;
@@ -1349,7 +1266,6 @@ footer {
   }
 }
 
-/* Extra small mobile adjustments */
 @media (max-width: 480px) {
   .hero-title {
     font-size: 2.45rem;
@@ -1360,43 +1276,4 @@ footer {
   .nav-logo-img {
     height: 36px;
   }
-}
-/* LAPTOP FULL-WIDTH ALIGNMENT FIX */
-html, body {
-  width: 100% !important;
-  max-width: 100% !important;
-  overflow-x: hidden !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-footer {
-  width: 100% !important;
-  background: var(--brand-navy-dark) !important;
-  color: #94A3B8;
-  padding: 5rem 0 2rem !important;
-  box-sizing: border-box !important;
-}
-
-.footer-container {
-  width: 100% !important;
-  max-width: var(--max-width) !important;
-  margin: 0 auto !important;
-  padding: 0 2.5rem !important;
-  display: grid !important;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr !important;
-  gap: 3.5rem !important;
-  box-sizing: border-box !important;
-}
-
-.footer-bottom {
-  width: 100% !important;
-  max-width: var(--max-width) !important;
-  margin: 0 auto !important;
-  padding: 2rem 2.5rem 0 !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  box-sizing: border-box !important;
 }
