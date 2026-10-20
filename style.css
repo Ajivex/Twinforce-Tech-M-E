@@ -1024,42 +1024,55 @@ footer {
   gap: 1rem;
 }
 
-/* SMART DIRECTIONAL SCROLL BUTTON */
+/* INDUSTRIAL HARD-HAT SMART BUTTON */
 .scroll-fab {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
   z-index: 999;
-  background: var(--brand-orange);
-  color: #FFFFFF;
+  background: #F59E0B; /* Warm Golden Yellow */
+  color: #122547;      /* Dark Navy Hat Icon */
   width: 58px;
   height: 58px;
   border-radius: 50%;
+  border: 3px solid #FFFFFF; /* Clean White Border */
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 18px rgba(200, 75, 38, 0.5);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.55), 0 2px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: transform var(--transition), background-color var(--transition);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
-.scroll-fab:hover { transform: scale(1.08); }
-.fab-icon-wrapper i { font-size: 1.35rem; transition: transform var(--transition); }
+.scroll-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(245, 158, 11, 0.75), 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.fab-icon-wrapper i {
+  font-size: 1.55rem;
+  transition: transform 0.3s ease;
+}
 
 .fab-tooltip {
   position: absolute;
-  right: 68px;
-  background: var(--brand-navy-dark);
+  right: 70px;
+  background: #122547;
   color: #FFFFFF;
-  padding: 0.4rem 0.75rem;
-  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
   font-size: 0.75rem;
+  font-weight: 600;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition);
+  transition: opacity 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-.scroll-fab:hover .fab-tooltip { opacity: 1; }
+
+.scroll-fab:hover .fab-tooltip {
+  opacity: 1;
+}
 
 /* Modals */
 .lightbox {
