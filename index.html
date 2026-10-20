@@ -520,8 +520,7 @@
       </div>
 
       <!-- Right Column Form -->
-      <div>
-        <form class="contact-form" id="contactForm" novalidate>
+<form class="contact-form" id="contactForm" novalidate>
           <div class="form-row">
             <div class="form-group">
               <label for="formName">Full Name *</label>
@@ -547,7 +546,7 @@
           <div class="form-group">
             <label for="formService">Service Required</label>
             <select id="formService" name="service">
-              <option value=""> Select a service </option>
+              <option value="">— Select a service —</option>
               <option>Mechanical Engineering</option>
               <option>Structural Material Supply, Fabrication &amp; Installation</option>
               <option>Piping Material Supply, Fabrication &amp; Installation (ASME B31.3)</option>
@@ -569,13 +568,12 @@
             <textarea id="formMessage" name="message" rows="4" required></textarea>
           </div>
 
-          <!-- SLEEK SINGLE FILE ATTACHMENT BAR (BACKGROUND RULES APPLY SILENTLY) -->
+          <!-- 2 SEPARATE EASY SLOTS (EACH UP TO 10MB) -->
           <div class="compact-file-group">
-            <label class="compact-file-label"><i class="fas fa-paperclip"></i> Attach Drawings / BOQ (Optional)</label>
-            <div class="sleek-upload-bar">
-              <span class="sleek-file-btn"><i class="fas fa-folder-open"></i> Choose Files</span>
-              <span class="sleek-file-name" id="sleekFileName">No files selected</span>
-              <input type="file" id="sleekFileInput" name="drawings" class="hidden-real-file" multiple accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.xlsx,.xls,.csv" />
+            <label class="compact-file-label"><i class="fas fa-paperclip"></i> Attach Drawings / Documents (Optional - Max 2 Files)</label>
+            <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.35rem;">
+              <input type="file" id="fileSlot1" name="file1" accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.xlsx,.xls,.csv" style="font-size: 0.85rem;" />
+              <input type="file" id="fileSlot2" name="file2" accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.xlsx,.xls,.csv" style="font-size: 0.85rem;" />
             </div>
           </div>
 
@@ -583,17 +581,14 @@
             <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off" />
           </div>
 
-          <div class="form-status" id="formStatus" role="alert"></div>
+          <!-- CLEAR ALERT STATUS BOX -->
+          <div class="form-status" id="formStatus" role="alert" style="display:none; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; font-weight: 600; text-align: center;"></div>
           
           <button type="submit" class="form-submit" id="submitBtn">
-            <span class="btn-text">Request Quotation</span>
+            <span id="btnText">REQUEST QUOTATION</span>
             <span class="submit-spinner hidden" id="submitSpinner"></span>
           </button>
         </form>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
