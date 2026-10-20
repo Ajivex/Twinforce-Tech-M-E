@@ -1,308 +1,265 @@
 /**
- * Twinforce Technologies Pte. Ltd. - Core Client Script
+ * Twinforce Technologies Pte. Ltd. - Core Scripts
+ * Handles Navigation, Modals, 3D Scroll FAB, and Multi-File RFQ (2x10MB)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
-  initCapabilityTabs();
-  initSpecModals();
-  initScopeEstimator();
+  initScrollFab();
+  initMultiFileUpload();
+  initContactForm();
   initAutoYear();
 });
 
-/* 1. Mobile Navigation */
+/* 1. Mobile Hamburger Menu */
 function initMobileNav() {
-  const toggleBtn = document.getElementById('navToggle');
-  const drawer = document.getElementById('mobileDrawer');
-  const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-cta');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-  if (!toggleBtn || !drawer) return;
+  if (!hamburger || !mobileMenu) return;
 
-  toggleBtn.addEventListener('click', () => {
-    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-    toggleBtn.setAttribute('aria-expanded', !isExpanded);
-    drawer.classList.toggle('open');
-    drawer.setAttribute('aria-hidden', isExpanded);
-  });
-
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      toggleBtn.setAttribute('aria-expanded', 'false');
-      drawer.classList.remove('open');
-      drawer.setAttribute('aria-hidden', 'true');
-    });
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('open');
+    mobileMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', !isOpen);
   });
 }
 
-/* 2. Capability Switcher Tabs */
-function initCapabilityTabs() {
-  const btnMechanical = document.getElementById('btnMechanical');
-  const btnElectrical = document.getElementById('btnElectrical');
-  const cards = document.querySelectorAll('.capability-card');
-
-  if (!btnMechanical || !btnElectrical) return;
-
-  function filterCards(targetCategory) {
-    cards.forEach(card => {
-      if (card.getAttribute('data-category') === targetCategory) {
-        card.classList.remove('hidden');
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-  }
-
-  btnMechanical.addEventListener('click', () => {
-    btnMechanical.classList.add('active');
-    btnMechanical.setAttribute('aria-selected', 'true');
-    btnElectrical.classList.remove('active');
-    btnElectrical.setAttribute('aria-selected', 'false');
-    filterCards('mechanical');
-  });
-
-  btnElectrical.addEventListener('click', () => {
-    btnElectrical.classList.add('active');
-    btnElectrical.setAttribute('aria-selected', 'true');
-    btnMechanical.classList.remove('active');
-    btnMechanical.setAttribute('aria-selected', 'false');
-    filterCards('electrical');
-  });
+function closeMobile() {
+  const mobileMenu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  if (mobileMenu) mobileMenu.classList.remove('open');
+  if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
 }
 
-/* 3. Technical Specs Modal */
-const SPEC_DATA = {
-  'modal-piping': {
-    category: 'ASME Process Piping',
-    title: 'Process & Utility High-Pressure Piping Specs',
-    content: `
-      <h4>Applicable Engineering Codes</h4>
-      <ul>
-        <li>ASME B31.3 (Chemical Plant & Petroleum Refinery Piping)</li>
-        <li>ASME B31.1 (Power & Utility Steam Piping)</li>
-      </ul>
-      <h4>Metallurgy & Dimensional Scope</h4>
-      <ul>
-        <li>A106 Gr. B / A53 Carbon Steel (Sch 40 to Sch 160 / XXS)</li>
-        <li>ASTM A312 TP304L / TP316L Stainless Steel</li>
-        <li>Sizes: 1/2" up to 48" Nominal Bore (NB)</li>
-      </ul>
-      <h4>NDT & QA/QC Documentation</h4>
-      <ul>
-        <li>100% Traceability with EN 10204 3.1 Material Test Reports (MTR)</li>
-        <li>Weld mapping, Radiographic Testing (RT), and Dye Penetrant Examination (PT)</li>
-      </ul>
-    `
-  },
-  'modal-skids': {
-    category: 'Structural Fabrication',
-    title: 'Modular Skid & Structural Steel Specs',
-    content: `
-      <h4>Structural Design & Fabrication</h4>
-      <ul>
-        <li>Structural steel welding certified to AWS D1.1 / D1.1M</li>
-        <li>Hot-dip galvanizing to ISO 1461 or industrial 3-coat marine epoxy systems</li>
-      </ul>
-      <h4>Engineering Verification</h4>
-      <ul>
-        <li>Lifting lug calculations & non-destructive magnetic particle inspection (MPI)</li>
-        <li>Pre-commissioning skid static alignment and vibration baseline tests</li>
-      </ul>
-    `
-  },
-  'modal-hydro': {
-    category: 'Hydrostatic & Shutdown',
-    title: 'Hydrostatic Proof Testing & Turnaround Protocols',
-    content: `
-      <h4>Pressure Testing Capacity</h4>
-      <ul>
-        <li>Standard shop and field hydro tests up to 350+ Bar (5,000+ PSI)</li>
-        <li>Pneumatic testing protocols per ASME B31.3 Section 345.5</li>
-      </ul>
-      <h4>Instrumentation & Safety Compliance</h4>
-      <ul>
-        <li>Dual calibrated chart recorders and digital quartz pressure logs</li>
-        <li>Singapore MOM-certified safety release valves installed on test manifolds</li>
-      </ul>
-    `
-  },
-  'modal-power': {
-    category: 'Electrical Distribution',
-    title: 'LV/HV Power Distribution & Switchgear Specs',
-    content: `
-      <h4>Standards Compliance</h4>
-      <ul>
-        <li>Singapore Standard SS 638 (formerly CP 5) electrical safety code</li>
-        <li>IEC 61439-1/2 for Low-Voltage switchgear and controlgear assemblies</li>
-      </ul>
-      <h4>Installation & Injection Testing</h4>
-      <ul>
-        <li>Primary and secondary current injection testing of protective relays</li>
-        <li>Thermographic infrared imaging and insulation resistance certification</li>
-      </ul>
-    `
-  },
-  'modal-lew': {
-    category: 'LEW Licensing',
-    title: 'Licensed Electrical Worker (LEW) Services',
-    content: `
-      <h4>Licensing Grade Coverage</h4>
-      <ul>
-        <li>EMA Grade 7, 8, and Grade 9 (High Voltage up to 22kV / 66kV)</li>
-      </ul>
-      <h4>Mandatory Statutory Deliverables</h4>
-      <ul>
-        <li>Single Line Diagram (SLD) preparation, endorsement, and annual submission</li>
-        <li>EMA Operating License renewal inspections and emergency fault attendance</li>
-      </ul>
-    `
-  },
-  'modal-ei': {
-    category: 'Instrumentation & ELV',
-    title: 'E&I Control Panels & Hazardous Area Systems',
-    content: `
-      <h4>Explosion Proof & Hazardous Zones</h4>
-      <ul>
-        <li>IECEx and ATEX certified Ex-d, Ex-e, and Ex-i junction boxes and panels</li>
-      </ul>
-      <h4>Instrumentation Loops & SCDF Fire Alarms</h4>
-      <ul>
-        <li>Loop checks for pressure, differential, temperature, and radar flow meters</li>
-        <li>SCDF code-compliant addressable multi-loop fire alarm integrations</li>
-      </ul>
-    `
-  }
-};
-
-function initSpecModals() {
-  const modal = document.getElementById('specModal');
-  const modalClose = document.getElementById('modalCloseBtn');
-  const modalCategory = document.getElementById('modalCategory');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalBody = document.getElementById('modalBody');
-  const modalActionBtn = document.getElementById('modalActionBtn');
-  const triggers = document.querySelectorAll('.modal-trigger');
-
-  if (!modal || !modalClose) return;
-
-  triggers.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modalKey = btn.getAttribute('data-modal');
-      const data = SPEC_DATA[modalKey];
-
-      if (data) {
-        modalCategory.textContent = data.category;
-        modalTitle.textContent = data.title;
-        modalBody.innerHTML = data.content;
-        modal.showModal();
-      }
-    });
+/* 2. Projects Filter Tabs */
+function filterProjects(event, category) {
+  const tabButtons = document.querySelectorAll('.projects-tabs .tab-btn');
+  tabButtons.forEach(btn => {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-selected', 'false');
   });
 
-  modalClose.addEventListener('click', () => modal.close());
-  modalActionBtn.addEventListener('click', () => modal.close());
+  event.currentTarget.classList.add('active');
+  event.currentTarget.setAttribute('aria-selected', 'true');
 
-  modal.addEventListener('click', (e) => {
-    const rect = modal.getBoundingClientRect();
-    if (
-      e.clientX < rect.left ||
-      e.clientX > rect.right ||
-      e.clientY < rect.top ||
-      e.clientY > rect.bottom
-    ) {
-      modal.close();
+  const projectCards = document.querySelectorAll('#projectsGrid .project-card');
+  projectCards.forEach(card => {
+    const cardCat = card.getAttribute('data-category');
+    if (category === 'all' || cardCat === category) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
     }
   });
 }
 
-/* 4. Scope Estimator & RFQ Submission */
-function initScopeEstimator() {
-  const form = document.getElementById('rfqForm');
+/* 3. Lightbox Modal Controllers */
+function openProjectModal(title, category, description) {
+  const modal = document.getElementById('projectModal');
+  if (!modal) return;
+  document.getElementById('projTitle').textContent = title;
+  document.getElementById('projTag').textContent = category;
+  document.getElementById('projDesc').textContent = description;
+  modal.classList.add('active');
+}
+
+function openTeamModal(name, role, experience, email, phone) {
+  const modal = document.getElementById('teamModal');
+  if (!modal) return;
+  document.getElementById('teamName').textContent = name;
+  document.getElementById('teamRole').textContent = role;
+  document.getElementById('teamExp').textContent = experience;
+
+  const waBtn = document.getElementById('teamWa');
+  const mailBtn = document.getElementById('teamMail');
+  if (waBtn) waBtn.href = `https://wa.me/${phone}`;
+  if (mailBtn) mailBtn.href = `mailto:${email}`;
+
+  modal.classList.add('active');
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.classList.remove('active');
+}
+
+window.addEventListener('click', (e) => {
+  const projModal = document.getElementById('projectModal');
+  const teamModal = document.getElementById('teamModal');
+  if (e.target === projModal) projModal.classList.remove('active');
+  if (e.target === teamModal) teamModal.classList.remove('active');
+});
+
+/* 4. 3D Worker Scroll Button */
+function initScrollFab() {
+  const fab = document.getElementById('scrollWorkerFab');
+  if (!fab) return;
+
+  fab.addEventListener('click', () => {
+    const totalHeight = document.documentElement.scrollHeight;
+    const currentPos = window.scrollY + window.innerHeight;
+
+    if (currentPos >= totalHeight - 200) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' });
+    }
+  });
+}
+
+/* 5. Multi-File Size Checker (2 Files, Max 10MB each, Total 20MB) */
+function initMultiFileUpload() {
+  const file1 = document.getElementById('uploadFile1');
+  const file2 = document.getElementById('uploadFile2');
+  const statusLabel = document.getElementById('fileSizeStatus');
+
+  const MAX_EACH_MB = 10;
+  const MAX_TOTAL_MB = 20;
+
+  function updateStatus() {
+    let size1 = file1 && file1.files[0] ? file1.files[0].size : 0;
+    let size2 = file2 && file2.files[0] ? file2.files[0].size : 0;
+
+    let totalBytes = size1 + size2;
+    let totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+
+    if (statusLabel) {
+      statusLabel.textContent = `Total Selected: ${totalMB} MB / ${MAX_TOTAL_MB} MB`;
+      if (totalBytes > MAX_TOTAL_MB * 1024 * 1024) {
+        statusLabel.style.color = '#DC2626';
+      } else {
+        statusLabel.style.color = '#C84B26';
+      }
+    }
+  }
+
+  function validateInput(input) {
+    if (input && input.files[0]) {
+      const file = input.files[0];
+      if (file.size > MAX_EACH_MB * 1024 * 1024) {
+        alert(`File "${file.name}" exceeds the 10MB limit. Please compress or select a smaller drawing.`);
+        input.value = '';
+      }
+    }
+    updateStatus();
+  }
+
+  if (file1) file1.addEventListener('change', () => validateInput(file1));
+  if (file2) file2.addEventListener('change', () => validateInput(file2));
+}
+
+/* 6. Form Submission with AJAX & Base64 Multi-File Processing */
+function initContactForm() {
+  const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
   const spinner = document.getElementById('submitSpinner');
-  const feedback = document.getElementById('formFeedback');
+  const statusMsg = document.getElementById('formStatus');
 
   if (!form) return;
 
-  // Apps Script endpoint (Replace with actual deployment URL when ready)
+  // 🔴 IMPORTANT: Replace this placeholder with your deployed Google Apps Script Web App URL!
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_DEPLOYED_APP_ID/exec';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    feedback.className = 'form-feedback hidden';
-    feedback.textContent = '';
+    // 1. Reset Status
+    statusMsg.className = 'form-status';
+    statusMsg.style.display = 'none';
+    statusMsg.textContent = '';
 
-    // Honeypot check
-    if (form.website_url.value) {
-      feedback.className = 'form-feedback success';
-      feedback.textContent = 'Enquiry received successfully.';
+    // 2. Anti-Spam Honeypot Verification
+    if (form.website_url && form.website_url.value.trim() !== '') {
+      statusMsg.className = 'form-status success';
+      statusMsg.textContent = 'Enquiry logged successfully. Our team will contact you.';
       form.reset();
       return;
     }
 
+    // 3. Validation
     if (!form.checkValidity()) {
-      feedback.className = 'form-feedback error';
-      feedback.textContent = 'Please fill in all required fields.';
+      statusMsg.className = 'form-status error';
+      statusMsg.textContent = 'Please fill in all required fields accurately.';
       return;
     }
 
+    // 4. File Size Verification
+    const file1Input = document.getElementById('uploadFile1');
+    const file2Input = document.getElementById('uploadFile2');
+    let size1 = file1Input && file1Input.files[0] ? file1Input.files[0].size : 0;
+    let size2 = file2Input && file2Input.files[0] ? file2Input.files[0].size : 0;
+
+    if (size1 + size2 > 20 * 1024 * 1024) {
+      statusMsg.className = 'form-status error';
+      statusMsg.textContent = 'Combined file size exceeds the 20MB limit. Please reduce drawing file sizes.';
+      return;
+    }
+
+    // Lock Button & Show Spinner
     submitBtn.disabled = true;
-    spinner.classList.remove('hidden');
+    if (spinner) spinner.classList.remove('hidden');
 
     try {
-      const fileInput = document.getElementById('drawingFile');
-      let base64File = null;
-      let fileName = '';
-      let fileType = '';
+      // Process File 1 (Base64)
+      let fileData1 = null, fileName1 = '', fileType1 = '';
+      if (file1Input && file1Input.files.length > 0) {
+        const f1 = file1Input.files[0];
+        fileName1 = f1.name;
+        fileType1 = f1.type;
+        fileData1 = await fileToBase64(f1);
+      }
 
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        if (file.size > 15 * 1024 * 1024) {
-          throw new Error('File size exceeds 15MB limit.');
-        }
-        fileName = file.name;
-        fileType = file.type;
-        base64File = await fileToBase64(file);
+      // Process File 2 (Base64)
+      let fileData2 = null, fileName2 = '', fileType2 = '';
+      if (file2Input && file2Input.files.length > 0) {
+        const f2 = file2Input.files[0];
+        fileName2 = f2.name;
+        fileType2 = f2.type;
+        fileData2 = await fileToBase64(f2);
       }
 
       const payload = {
-        discipline: form.discipline.value,
-        material: form.material.value,
-        facility: form.facility.value,
-        location: form.location.value,
-        clientName: form.clientName.value.trim(),
+        name: form.name.value.trim(),
         company: form.company.value.trim(),
         email: form.email.value.trim(),
         phone: form.phone.value.trim(),
-        scopeNotes: form.scopeNotes.value.trim(),
-        fileData: base64File,
-        fileName: fileName,
-        fileType: fileType
+        service: form.service.value,
+        message: form.message.value.trim(),
+        fileData1: fileData1,
+        fileName1: fileName1,
+        fileType1: fileType1,
+        fileData2: fileData2,
+        fileName2: fileName2,
+        fileType2: fileType2
       };
 
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
         body: JSON.stringify(payload)
       });
 
       const result = await response.json();
 
       if (result.status === 'success') {
-        feedback.className = 'form-feedback success';
-        feedback.innerHTML = `<strong>Enquiry Logged:</strong> Scope ID <strong>#${result.ticketId}</strong> generated. Confirmation email sent.`;
+        statusMsg.className = 'form-status success';
+        statusMsg.innerHTML = `<strong>Enquiry Received:</strong> Reference ID <strong>#${result.ticketId}</strong> logged. Our engineering desk will review your scope.`;
         form.reset();
+        document.getElementById('fileSizeStatus').textContent = 'Total Selected: 0 MB / 20 MB';
       } else {
-        throw new Error(result.message || 'Error recording scope.');
+        throw new Error(result.message || 'System encountered an error recording your scope.');
       }
 
     } catch (err) {
-      console.error(err);
-      feedback.className = 'form-feedback error';
-      feedback.textContent = err.message || 'Submission error. Please call +65 89585741 directly.';
+      console.error('Submission Error:', err);
+      statusMsg.className = 'form-status error';
+      statusMsg.textContent = err.message || 'Unable to submit enquiry online. Please WhatsApp +65 89585741 directly.';
     } finally {
       submitBtn.disabled = false;
-      spinner.classList.add('hidden');
+      if (spinner) spinner.classList.add('hidden');
     }
   });
 }
@@ -311,12 +268,15 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onload = () => {
+      const base64Data = reader.result.split(',')[1];
+      resolve(base64Data);
+    };
     reader.onerror = error => reject(error);
   });
 }
 
-/* 5. Year Update */
+/* 7. Auto Year */
 function initAutoYear() {
   const yr = document.getElementById('currentYear');
   if (yr) yr.textContent = new Date().getFullYear();
