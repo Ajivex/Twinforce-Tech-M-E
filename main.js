@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmartScroll();
   initContactForm();
   initAutoYear();
+  
+  // Page load aagum podhey "All" tab-la first 6 projects mattum show pannum
+  filterProjects(null, 'all');
 });
 
 /* 1. Mobile Menu */
@@ -30,7 +33,7 @@ function closeMobile() {
   if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
 }
 
-/* 2. Projects Filter */
+/* 2. Projects Filter (All -> Max 6, Mechanical/Electrical -> Category full) */
 function filterProjects(event, category) {
   const tabButtons = document.querySelectorAll('.projects-tabs .tab-btn');
   tabButtons.forEach(btn => {
@@ -38,16 +41,39 @@ function filterProjects(event, category) {
     btn.setAttribute('aria-selected', 'false');
   });
 
-  event.currentTarget.classList.add('active');
-  event.currentTarget.setAttribute('aria-selected', 'true');
+  if (event && event.currentTarget) {
+    event.currentTarget.classList.add('active');
+    event.currentTarget.setAttribute('aria-selected', 'true');
+  } else {
+    // Initial page load fallback to 'All' tab button
+    const defaultAllBtn = document.querySelector('.projects-tabs .tab-btn');
+    if (defaultAllBtn) {
+      defaultAllBtn.classList.add('active');
+      defaultAllBtn.setAttribute('aria-selected', 'true');
+    }
+  }
 
   const projectCards = document.querySelectorAll('#projectsGrid .project-card');
+  let allCount = 0;
+
   projectCards.forEach(card => {
     const cardCat = card.getAttribute('data-category');
-    if (category === 'all' || cardCat === category) {
-      card.style.display = 'flex';
+
+    if (category === 'all') {
+      // 'All' click panna strictly first 6 projects mattum display pannum
+      if (allCount < 6) {
+        card.style.display = 'flex';
+        allCount++;
+      } else {
+        card.style.display = 'none';
+      }
     } else {
-      card.style.display = 'none';
+      // 'Mechanical' or 'Electrical' click panna antha category mothamum kaattum
+      if (cardCat === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
     }
   });
 }
@@ -237,7 +263,7 @@ function initContactForm() {
   });
 }
 
-/* 6. Base64 Converter Function (Fixes 'fileToBase64 is not defined') */
+/* 6. Base64 Converter Function */
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
