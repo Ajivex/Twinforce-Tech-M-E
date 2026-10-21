@@ -124,7 +124,6 @@ function initSmartScroll() {
 }
 
 /* 5. Form Submission */
-/* 5. Form Submission */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -143,12 +142,6 @@ function initContactForm() {
     }
 
     if (form.website_url && form.website_url.value.trim() !== '') {
-      if (statusMsg) {
-        statusMsg.style.display = 'block';
-        statusMsg.style.background = '#DCFCE7';
-        statusMsg.style.color = '#14532D';
-        statusMsg.textContent = 'Enquiry logged successfully.';
-      }
       form.reset();
       return;
     }
@@ -158,7 +151,7 @@ function initContactForm() {
         statusMsg.style.display = 'block';
         statusMsg.style.background = '#FEE2E2';
         statusMsg.style.color = '#991B1B';
-        statusMsg.textContent = 'Please fill in all required fields.';
+        statusMsg.textContent = 'Please fill in all required fields accurately.';
       }
       return;
     }
@@ -205,7 +198,7 @@ function initContactForm() {
         fileType2: fileType2
       };
 
-      await fetch(SCRIPT_URL, {
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8'
@@ -213,14 +206,20 @@ function initContactForm() {
         body: JSON.stringify(payload)
       });
 
-      if (statusMsg) {
-        statusMsg.style.display = 'block';
-        statusMsg.style.background = '#DCFCE7';
-        statusMsg.style.color = '#14532D';
-        statusMsg.style.border = '1px solid #86EFAC';
-        statusMsg.innerHTML = `✅ <strong>Submitted Successfully!</strong><br>Your enquiry has been received. Our estimating team will contact you shortly.`;
+      const result = await response.json();
+
+      if (result.status === 'success') {
+        if (statusMsg) {
+          statusMsg.style.display = 'block';
+          statusMsg.style.background = '#DCFCE7';
+          statusMsg.style.color = '#14532D';
+          statusMsg.style.border = '1px solid #86EFAC';
+          statusMsg.innerHTML = `✅ <strong>Submitted Successfully!</strong><br>Reference ID: <strong>#${result.ticketId}</strong>. We will review your scope shortly.`;
+        }
+        form.reset();
+      } else {
+        throw new Error(result.message || 'System encountered an issue.');
       }
-      form.reset();
 
     } catch (err) {
       console.error('Submission Error:', err);
@@ -229,7 +228,7 @@ function initContactForm() {
         statusMsg.style.background = '#FEE2E2';
         statusMsg.style.color = '#991B1B';
         statusMsg.style.border = '1px solid #FCA5A5';
-        statusMsg.textContent = err.message || 'Submission failed. Please WhatsApp +65 89585741 directly.';
+        statusMsg.textContent = err.message || 'Submission failed. Please WhatsApp +65 84645246 directly.';
       }
     } finally {
       submitBtn.disabled = false;
@@ -238,7 +237,20 @@ function initContactForm() {
   });
 }
 
-/* 6. Dynamic Year */
+/* 6. Base64 Converter Function (Fixes 'fileToBase64 is not defined') */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64 = reader.result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = error => reject(error);
+  });
+}
+
+/* 7. Dynamic Year */
 function initAutoYear() {
   const yr = document.getElementById('currentYear');
   if (yr) yr.textContent = new Date().getFullYear();
