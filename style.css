@@ -101,7 +101,7 @@ button, input, select, textarea { font: inherit; }
 }
 
 /* ==========================================================================
-   NAVBAR & LOGO (SINGLE-LINE BULLETPROOF FIX)
+   NAVBAR & LOGO (ROCK SOLID SIDE-BY-SIDE FLEXBOX)
    ========================================================================== */
 #navbar {
   position: sticky;
@@ -125,37 +125,43 @@ button, input, select, textarea { font: inherit; }
   align-items: center;
 }
 
-.nav-logo, .brand-logo-container {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
+/* Side by side alignment container */
+.nav-brand {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
   text-decoration: none;
+  min-width: 0;
 }
 
-.nav-logo-img, .header-logo {
+.brand-logo {
   height: 50px;
   width: auto;
   max-width: 58px;
   object-fit: contain;
-  display: block;
-  flex-shrink: 0;
+  display: block !important;
+  flex-shrink: 0 !important;
 }
 
-.nav-logo-text, .brand-text {
+.brand-titles {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  line-height: 1.15;
+}
+
+.brand-name {
   font-family: var(--font-display);
   font-size: 1.45rem;
   font-weight: 800;
   letter-spacing: 0.5px;
   color: var(--brand-navy);
-  line-height: 1.15;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   white-space: nowrap !important;
+  display: block;
 }
 
-.nav-logo-text span, .company-sub {
+.brand-sub {
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 600;
@@ -163,6 +169,7 @@ button, input, select, textarea { font: inherit; }
   color: var(--steel);
   margin-top: 2px;
   white-space: nowrap !important;
+  display: block;
 }
 
 .nav-links {
@@ -820,7 +827,7 @@ button, input, select, textarea { font: inherit; }
 }
 
 /* ==========================================================================
-   CONTACT FORM & SLEEK DROPDOWN STYLING
+   CONTACT FORM & CLEAN SELECT DROPDOWN
    ========================================================================== */
 .contact-grid {
   display: grid;
@@ -889,7 +896,6 @@ button, input, select, textarea { font: inherit; }
   transition: border-color var(--transition);
 }
 
-/* Custom Styled Select Dropdown (No ugly side arrows) */
 .contact-form select {
   appearance: none;
   -webkit-appearance: none;
@@ -897,7 +903,7 @@ button, input, select, textarea { font: inherit; }
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%231E3A6D'%20stroke-width='2.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='6%209%2012%2015%2018%209'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.1rem center;
-  background-size: 15px 15px;
+  background-size: 14px 14px;
   cursor: pointer;
 }
 
@@ -916,56 +922,6 @@ button, input, select, textarea { font: inherit; }
   font-weight: 700;
   color: var(--brand-navy);
   margin-bottom: 0.45rem;
-}
-
-.sleek-upload-bar {
-  display: flex;
-  align-items: center;
-  background: #F8FAFC;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem 0.75rem;
-  position: relative;
-  transition: border-color var(--transition);
-}
-
-.sleek-upload-bar:hover { border-color: var(--brand-navy); }
-
-.sleek-file-btn {
-  background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
-  color: var(--brand-navy);
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  transition: var(--transition);
-  flex-shrink: 0;
-}
-
-.sleek-file-btn:hover { background: var(--brand-navy); color: #FFFFFF; }
-
-.sleek-file-name {
-  margin-left: 1rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-grow: 1;
-}
-
-.hidden-real-file {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
 }
 
 .form-submit {
@@ -1010,9 +966,6 @@ button, input, select, textarea { font: inherit; }
   display: none;
   text-align: center;
 }
-
-.form-status.success { display: block; background: #DCFCE7; color: #14532D; border: 1px solid #BBF7D0; }
-.form-status.error { display: block; background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
 
 /* ==========================================================================
    FOOTER
@@ -1202,27 +1155,40 @@ footer {
     display: flex;
   }
   
-  /* SINGLE LINE HEADER ENFORCEMENT */
-  .nav-logo, .brand-logo-container {
-    gap: 0.45rem;
-    max-width: calc(100% - 48px);
+  /* SINGLE LINE SIDE-BY-SIDE MOBILE HEADER */
+  .nav-brand {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+    max-width: calc(100% - 46px);
   }
 
-  .nav-logo-img, .header-logo {
-    height: 38px;
-    max-width: 42px;
+  .brand-logo {
+    height: 38px !important;
+    max-width: 42px !important;
+    flex-shrink: 0 !important;
   }
   
-  .nav-logo-text, .brand-text {
+  .brand-titles {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    min-width: 0;
+  }
+
+  .brand-name {
     font-size: 0.92rem !important;
     white-space: nowrap !important;
-    overflow: hidden;
+    letter-spacing: -0.2px;
+    line-height: 1.1;
   }
   
-  .nav-logo-text span, .company-sub {
+  .brand-sub {
     font-size: 0.62rem !important;
     white-space: nowrap !important;
     margin-top: 1px;
+    line-height: 1.1;
   }
 
   #hero {
@@ -1366,23 +1332,23 @@ footer {
   }
 }
 
-/* SMARTPHONES BELOW 480PX (ZERO BREAK GUARANTEE) */
+/* SMARTPHONES BELOW 480PX (EXACT FIT FOR MOBILE DEVICES) */
 @media (max-width: 480px) {
   .nav-inner {
-    padding: 0 0.85rem;
+    padding: 0 0.75rem;
   }
-  .nav-logo, .brand-logo-container {
-    gap: 0.35rem;
+  .nav-brand {
+    gap: 0.35rem !important;
   }
-  .nav-logo-img, .header-logo {
-    height: 34px;
-    max-width: 38px;
+  .brand-logo {
+    height: 34px !important;
+    max-width: 38px !important;
   }
-  .nav-logo-text, .brand-text {
-    font-size: 0.82rem !important; /* Perfect fit on narrow devices like Honor/iPhone */
-    letter-spacing: -0.2px;
+  .brand-name {
+    font-size: 0.82rem !important;
+    letter-spacing: -0.3px;
   }
-  .nav-logo-text span, .company-sub {
+  .brand-sub {
     font-size: 0.58rem !important;
   }
   .hero-title {
@@ -1392,10 +1358,10 @@ footer {
 
 /* ULTRA NARROW BELOW 360PX */
 @media (max-width: 360px) {
-  .nav-logo-text, .brand-text {
+  .brand-name {
     font-size: 0.74rem !important;
   }
-  .nav-logo-text span, .company-sub {
+  .brand-sub {
     font-size: 0.52rem !important;
   }
 }
