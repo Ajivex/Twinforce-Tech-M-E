@@ -101,7 +101,7 @@ button, input, select, textarea { font: inherit; }
 }
 
 /* ==========================================================================
-   NAVBAR & LOGO (ROCK SOLID SIDE-BY-SIDE FLEXBOX)
+   NAVBAR & LOGO (ZOOMED BRAND WIDTH & TYPOGRAPHY)
    ========================================================================== */
 #navbar {
   position: sticky;
@@ -118,8 +118,8 @@ button, input, select, textarea { font: inherit; }
 .nav-inner {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 2.5rem;
-  height: 80px;
+  padding: 0 2rem;
+  height: 88px; /* Breathing space for larger logo & bold text */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -130,15 +130,16 @@ button, input, select, textarea { font: inherit; }
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  gap: 0.85rem !important;
+  gap: 1rem !important; /* Spacing between logo and title */
   text-decoration: none;
   min-width: 0;
 }
 
+/* Desktop Logo Zoom */
 .brand-logo {
-  height: 50px;
+  height: 56px !important;
   width: auto;
-  max-width: 58px;
+  max-width: 65px !important;
   object-fit: contain;
   display: block !important;
   flex-shrink: 0 !important;
@@ -151,9 +152,10 @@ button, input, select, textarea { font: inherit; }
   line-height: 1.15;
 }
 
+/* Desktop Company Name Zoom */
 .brand-name {
   font-family: var(--font-display);
-  font-size: 1.45rem;
+  font-size: 1.75rem !important;
   font-weight: 800;
   letter-spacing: 0.5px;
   color: var(--brand-navy);
@@ -161,13 +163,14 @@ button, input, select, textarea { font: inherit; }
   display: block;
 }
 
+/* Desktop UEN Zoom */
 .brand-sub {
   font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 0.82rem !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: var(--steel);
-  margin-top: 2px;
+  margin-top: 3px;
   white-space: nowrap !important;
   display: block;
 }
@@ -1146,7 +1149,7 @@ footer {
 
   .nav-inner {
     padding: 0 1rem;
-    height: 70px;
+    height: 76px;
   }
   .nav-links {
     display: none;
@@ -1155,18 +1158,18 @@ footer {
     display: flex;
   }
   
-  /* SINGLE LINE SIDE-BY-SIDE MOBILE HEADER */
+  /* SINGLE LINE SIDE-BY-SIDE MOBILE HEADER WITH CLEAR ZOOM */
   .nav-brand {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 0.45rem !important;
+    gap: 0.65rem !important;
     max-width: calc(100% - 46px);
   }
 
   .brand-logo {
-    height: 38px !important;
-    max-width: 42px !important;
+    height: 44px !important;
+    max-width: 48px !important;
     flex-shrink: 0 !important;
   }
   
@@ -1178,17 +1181,18 @@ footer {
   }
 
   .brand-name {
-    font-size: 0.92rem !important;
+    font-size: 1.15rem !important;
     white-space: nowrap !important;
     letter-spacing: -0.2px;
-    line-height: 1.1;
+    line-height: 1.15;
   }
   
   .brand-sub {
-    font-size: 0.62rem !important;
+    font-size: 0.72rem !important;
     white-space: nowrap !important;
-    margin-top: 1px;
-    line-height: 1.1;
+    margin-top: 2px;
+    line-height: 1.15;
+    font-weight: 700;
   }
 
   #hero {
@@ -1332,24 +1336,26 @@ footer {
   }
 }
 
-/* SMARTPHONES BELOW 480PX (EXACT FIT FOR MOBILE DEVICES) */
+/* SMARTPHONES BELOW 480PX (BALANCED PROMINENCE) */
 @media (max-width: 480px) {
   .nav-inner {
-    padding: 0 0.75rem;
+    padding: 0 0.85rem;
+    height: 72px;
   }
   .nav-brand {
-    gap: 0.35rem !important;
+    gap: 0.55rem !important;
   }
   .brand-logo {
-    height: 34px !important;
-    max-width: 38px !important;
+    height: 42px !important;
+    max-width: 46px !important;
   }
   .brand-name {
-    font-size: 0.82rem !important;
-    letter-spacing: -0.3px;
+    font-size: 1.05rem !important;
+    letter-spacing: -0.2px;
   }
   .brand-sub {
-    font-size: 0.58rem !important;
+    font-size: 0.68rem !important;
+    font-weight: 700;
   }
   .hero-title {
     font-size: 2.35rem;
@@ -1358,10 +1364,13 @@ footer {
 
 /* ULTRA NARROW BELOW 360PX */
 @media (max-width: 360px) {
+  .brand-logo {
+    height: 38px !important;
+  }
   .brand-name {
-    font-size: 0.74rem !important;
+    font-size: 0.94rem !important;
   }
   .brand-sub {
-    font-size: 0.52rem !important;
+    font-size: 0.62rem !important;
   }
 }
